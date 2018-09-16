@@ -1,8 +1,7 @@
 import runpy
 import sys
-from beats import music, tick, beat
-from pygame import time, mixer
-from math import floor
+from beats import score, tick
+from pygame import time
 
 if __name__ == '__main__':
     for i in range(1, len(sys.argv)):
@@ -10,6 +9,6 @@ if __name__ == '__main__':
 
     clock = time.Clock()
 
-    while music:
-        music.pop(0)()
-        clock.tick(tick * 1000)
+    while score:
+        score.pop(0)()
+        clock.tick(tick)

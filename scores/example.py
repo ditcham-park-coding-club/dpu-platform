@@ -1,6 +1,11 @@
-from beats import snare
+from beats import beat
 
-snare()
-snare()
-snare()
-snare()
+beat()
+beat()
+beat()
+beat()
+
+beat()
+beat()
+beat()
+beat()

@@ -1,19 +1,24 @@
 from pygame import mixer
 from math import floor
 
-mixer.init()
+# Smaller than default buffer size increases timing accuracy
+mixer.init(buffer = 1024)
 
-beat = 0.5 # 2 beats per second
+bpm = 120 # 2 beats per second
 
-tick = 0.03125 # 32 ticks per second
+tick = 32 # 32 ticks per second
 
-music = []
+tick_duration = 1 / tick
+beat_duration = 60 / bpm
+ticks_per_beat = beat_duration / tick_duration
+
+score = []
 
 sounds = {'snare': mixer.Sound('snare.ogg')}
 
-def snare(duration = 1):
-    play('snare', duration)
+def beat(beats = 1):
+    play('snare', beats)
 
-def play(sound, duration):
-    music.append(lambda: sounds[sound].play())
-    music.extend([lambda: None] * (floor((duration * beat) / tick) - 1))
+def play(sound, beats):
+    score.append(lambda: sounds[sound].play())
+    score.extend([lambda: None] * (floor(ticks_per_beat * beats) - 1))
