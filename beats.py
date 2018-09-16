@@ -11,7 +11,7 @@ music = []
 
 sounds = {'snare': mixer.Sound('snare.ogg')}
 
-def snare(duration):
+def snare(duration = 1):
     play('snare', duration)
 
 def play(sound, duration):
