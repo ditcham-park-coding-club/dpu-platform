@@ -1,0 +1,10 @@
+from beats import beats
+
+beat(02)
+beat()
+beat()
+beat(02)
+beat(02)
+beat()
+beat()
+beat(02)

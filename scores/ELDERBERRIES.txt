@@ -1,8 +1,4 @@
-0.5 beat
-1 beat
-0.5 beat
-1 beat
-1 beat
+<beat>
 
 0.5 beat
 1 beat
@@ -10,6 +6,25 @@
 1 beat
 1 beat
 
+0.5 beat
+1 beat
+0.5 beat
+1 beat
+1 beat
+
+</beat>
 
 
-He's not the Messiah, he's a very naughty boy! Now go away
+To whoever is reading this
+
+I will hunt you
+
+I will find you
+
+I will build a house around you
+
+With
+
+No
+
+ Doors
