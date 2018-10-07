@@ -1,12 +1,14 @@
 from beats import beat
 
-beat(0.5)
-beat()
-beat(0.5)
-beat()
+def bar();
+    beat(0.5)
+    beat(1.5)
+    beat(0.5)
+    beat(1.5)
+    beat(1.5)
+    beat(0.25)
+    beat(0.25)
+    beat(0.5)
+    beat(1.5)
 
-
-beat(0.5)
-beat()
-beat(0.5)
-beat()
+bar()

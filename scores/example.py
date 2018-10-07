@@ -1,11 +1,12 @@
 from beats import beat
 
-beat()
-beat()
-beat()
-beat()
+def bar():
+    beat(0.5)
+    beat(0.5)
+    beat()
+    beat()
 
-beat()
-beat()
-beat()
-beat()
+# helloooo
+bar()
+bar()
+#supbro
