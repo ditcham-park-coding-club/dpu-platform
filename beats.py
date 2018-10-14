@@ -23,13 +23,22 @@ def beat(beats = 1):
 
 def play(drum, beats = 1):
     _score(lambda: drums[drum].play())
-    _score(lambda: None, floor(ticks_per_beat * beats) - 1)
+    _score(lambda: None, floor(ticks_per_beat * beats) - 2)
+    # Stop the sound to prevent hogging channels
+    _score(lambda: drums[drum].stop())
+
+def rest(beats = 1):
+    _score(lambda: None, floor(ticks_per_beat * beats))
 
 def together(*parts):
     global position
     startPos = position
     for part in parts:
         position = startPos
+        part()
+
+def repeat(part, count):
+    for i in range(count):
         part()
 
 def _score(action, repeat = 1):

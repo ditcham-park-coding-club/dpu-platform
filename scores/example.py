@@ -1,12 +1,16 @@
-from beats import beat
+from beats import beat, repeat, play, together, rest
 
-def bar():
+def kick():
+    play('Kick-01', 1)
+
+def bass():
+    repeat(kick, 4)
+
+def funk():
     beat(0.5)
+    beat()
     beat(0.5)
     beat()
     beat()
 
-# helloooo
-bar()
-bar()
-#supbro
+repeat(funk, 3)
