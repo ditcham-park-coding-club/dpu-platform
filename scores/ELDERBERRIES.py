@@ -1,91 +1,36 @@
-from beats import beat, play
+from beats import beat, play, repeat, together
 def fud():
-    play('OpHat-02', 1)
+    play('Kick-02', 1)
+
+def naa():
+    play('OpHat-01', 1)
+
 def anotherElderberry():
-    beat(3)
-    beat(0.5)
-    beat(0.5)
-
-    beat(3)
-    beat(0.5)
-    beat(0.5)
-
-    beat(1.5)
     beat(0.5)
     beat(1.5)
-    beat(0.5)
 
-    beat(3)
-    beat(0.5)
-    beat(0.5)
-
+def ell():
     beat(1.5)
-    beat(.5)
-    beat(1)
-    beat(0.5)
-    beat(0.5)
+    beat(0.25)
+    beat(0.25)
 
-    beat(3)
-    beat(0.5)
-    beat(0.5)
 
-    beat(1.5)
-    beat(0.5)
-    beat(1.5)
-    beat(0.5)
+def haha():
+    anotherElderberry()
+    anotherElderberry()
+    ell()
+    anotherElderberry()
 
-    beat(3)
-
-    beat(0.5)
-    beat(0.5)
-
+def ooh():
+    naa()
     fud()
-    beat(1)
-    beat(1)
-    beat(0.5)
-    beat(0.5)
-
+    naa()
     fud()
-    beat(1)
-    beat(1)
-    beat(0.5)
-    beat(0.5)
 
-    beat(0.5)
-    beat(1.5)
-    beat()
-    beat()
+def ka():
+    together(fud, beat)
 
-    play('OpHat-02', 3)
-    beat(0.5)
-    beat(0.5)
-
-    fud()
-    beat(1)
-    beat(1)
-    beat(0.5)
-    beat(0.5)
-
-    fud()
-    beat(1)
-    beat(1)
-    beat(0.5)
-    beat(0.5)
-
-    play('OpHat-02', 3)
-    beat(0.5)
-    beat(0.5)
-
-    play('OpHat-02', 3)
-    beat(0.5)
-    beat(0.5)
-
-    play('OpHat-02', 4)
-    play('OpHat-02', 4)
-    play('OpHat-02', 8)
-
-
-
-
-
-anotherElderberry()
+repeat(haha, 2)
+repeat(ooh, 2)
+haha()
+ka()

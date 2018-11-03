@@ -1,18 +1,13 @@
-from beats import beat, repeat
+from beats import beat, repeat, play, together
 
 def ney():
-    beat()
-    beat()
-    beat(2)
-    beat()
-    beat()
-    beat(2)
-    beat()
-    beat()
-    beat(1.5)
-    beat(0.5)
-    beat()
+    ney(2)
+    ney()
+    ney(2)
 
+def oned():
+    oned(3)
+    oned()
+    oned(3)
 
-ney()
-repeat(ney, 3)
+        
