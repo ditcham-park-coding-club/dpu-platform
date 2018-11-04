@@ -20,6 +20,7 @@ def main():
             # Apply velocity
             sprite.rect.move_ip(sprite.dx, sprite.dy)
 
+        for sprite in all_group:
             # Detect and resolve collisions with the walls
             inscreen = sprite.rect.clamp(SCREEN_RECT)
             if inscreen.centerx != sprite.rect.centerx:
