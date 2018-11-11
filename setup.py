@@ -1,4 +1,4 @@
-from os import listdir
+from os import listdir, path
 
 import pygame
 from pygame.locals import *
@@ -19,8 +19,9 @@ background = pygame.Surface(SCREEN_RECT.size)
 
 object_names = set([fn.rsplit('.', 1)[0] for fn in listdir('objects')])
 object_types = {
-    name: pygame.image.load('objects/' + name + '.bmp').convert()
-    for name in object_names
+    name: pygame.image.load(bmp).convert()
+    for name, bmp in [(name, 'objects/' + name + '.bmp') for name in object_names]
+    if path.exists(bmp)
 }
 all_group = pygame.sprite.RenderUpdates()
 
