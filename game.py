@@ -32,7 +32,7 @@ def main():
             sprite.dy = sprite.dy * AIR_RESISTANCE
 
             # Apply gravity
-            sprite.dy += 5
+            sprite.dy += 10 - sprite.buoyancy
 
         dirty = all_group.draw(screen)
         pygame.display.update(dirty)
