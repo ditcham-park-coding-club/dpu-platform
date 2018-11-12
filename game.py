@@ -23,10 +23,9 @@ def main():
 
         # Apply velocity
         for sprite in all_group:
-            sprite.rect.move_ip(sprite.dx, sprite.dy)
             sprite.next_dx = sprite.dx
             sprite.next_dy = sprite.dy
-            resolve_wall_collision(sprite)
+            screen_move(sprite, sprite.dx, sprite.dy)
 
         # Resolve collisions with walls and other sprites
         dirty_group = all_group.copy()
@@ -36,7 +35,6 @@ def main():
             collided = pygame.sprite.spritecollideany(sprite, dirty_group)
             if collided is not None:
                 resolve_collision(sprite, collided)
-                resolve_wall_collision(sprite, collided)
                 dirty_group.add(sprite, collided)
 
         for sprite in all_group:
@@ -54,22 +52,26 @@ def main():
         clock.tick(40)
 
 
-def resolve_wall_collision(*sprites):
-    for sprite in sprites:
-        in_screen = sprite.rect.clamp(SCREEN_RECT)
-        if sprite.rect.center != in_screen.center:
-            if in_screen.centerx != sprite.rect.centerx:
-                sprite.next_dx = -sprite.dx * sprite.bounce
-                sprite.dx = 0.0  # Instantaneously stopped
-            if in_screen.centery != sprite.rect.centery:
-                sprite.next_dy = -sprite.dy * sprite.bounce
-                sprite.dy = 0.0  # Instantaneously stopped
-            sprite.rect = in_screen
+def screen_move(sprite, x, y, next_dx=None, next_dy=None):
+    start = sprite.rect
+    moved = start.move(x, y)
+    sprite.rect = moved.clamp(SCREEN_RECT)
+
+    if sprite.rect.centerx != moved.centerx:
+        sprite.next_dx = 0.0
+    elif next_dx is not None:
+        sprite.next_dx = next_dx
+
+    if sprite.rect.centery != moved.centery:
+        sprite.next_dy = 0.0
+    elif next_dy is not None:
+        sprite.next_dy = next_dy
+
+    return sprite.rect.centerx - start.centerx, sprite.rect.centery - start.centery
 
 
 def resolve_collision(s1, s2):
     overlap = s2.rect.clip(s1.rect)
-    bounce = (s1.bounce + s2.bounce) / 2
     total_mass = s2.mass + s1.mass
     x_speed = abs(s1.dx - s2.dx)
     y_speed = abs(s1.dy - s2.dy)
@@ -78,28 +80,17 @@ def resolve_collision(s1, s2):
         else overlap.height > overlap.width
 
     if horizontal_collision:
-        # Horizontal collision
         correct = math.ceil(overlap.width / 2)
-        s1.rect.move_ip(correct if s1.rect.centerx > s2.rect.centerx else -correct, 0)
-        s2.rect.move_ip(-correct if s1.rect.centerx > s2.rect.centerx else correct, 0)
-        s1.next_dx = (s2.dx - s1.dx) * (s2.mass / total_mass) * bounce
-        s2.next_dx = (s1.dx - s2.dx) * (s1.mass / total_mass) * bounce
+        direction = 1 if overlap.right == s1.rect.right else -1
+        next_dx = (s1.mass * s1.dx + s2.mass * s2.dx) / total_mass
+        (actual, _) = screen_move(s1, -correct * direction, 0, next_dx)
+        screen_move(s2, (correct - actual) * direction, 0, next_dx)
     else:
         correct = math.ceil(overlap.height / 2)
-        s1.rect.move_ip(0, correct if s1.rect.centery > s2.rect.centery else -correct)
-        s2.rect.move_ip(0, -correct if s1.rect.centery > s2.rect.centery else correct)
-        s1.next_dy = (s2.dy - s1.dy) * (s2.mass / total_mass) * bounce
-        s2.next_dy = (s1.dy - s2.dy) * (s1.mass / total_mass) * bounce
-
-    # Instantaneously sticky
-    s1.dx = s2.dx = (s1.mass * s1.dx + s2.mass * s2.dx) / total_mass
-    s1.dy = s2.dy = (s1.mass * s1.dy + s2.mass * s2.dy) / total_mass
-
-
-def screen_move(rect, x, y):
-    moved = rect.move(x, y).clamp(SCREEN_RECT)
-    rect.center = moved.center
-    return moved.centerx - rect.centerx, moved.centery - rect.centery
+        direction = 1 if overlap.bottom == s1.rect.bottom else -1
+        next_dy = (s1.mass * s1.dy + s2.mass * s2.dy) / total_mass
+        (_, actual) = screen_move(s1, 0, -correct * direction, None, next_dy)
+        screen_move(s2, 0, (correct - actual) * direction, None, next_dy)
 
 
 def has_quit():

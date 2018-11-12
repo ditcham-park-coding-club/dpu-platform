@@ -8,4 +8,4 @@ def on_key(bob, key_state):
         bob.dx = -5
 
     if key_state[K_SPACE]:
-        bob.dy = -50
+        bob.dy = -30

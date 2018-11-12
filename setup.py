@@ -19,7 +19,6 @@ OBJECT_DEFAULTS = {
     'dx': 0.0,
     'dy': 0.0,
     'mass': 10,
-    'bounce': 0.3,
     'buoyancy': 0,
     'on_key': noop
 }
