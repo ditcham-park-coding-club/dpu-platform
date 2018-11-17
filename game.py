@@ -1,6 +1,7 @@
 import runpy
 import sys
 import math
+from random import choice
 
 import pygame
 from pygame.locals import *
@@ -27,10 +28,10 @@ def main():
             sprite.next_dy = sprite.dy
             screen_move(sprite, sprite.dx, sprite.dy)
 
-        # Resolve collisions with walls and other sprites
+        # Resolve collisions with walls and other sprites.
         dirty_group = all_group.copy()
         while dirty_group:
-            sprite = dirty_group.sprites()[0]
+            sprite = choice(dirty_group.sprites())
             dirty_group.remove(sprite)
             collided = pygame.sprite.spritecollideany(sprite, dirty_group)
             if collided is not None:
@@ -57,13 +58,13 @@ def screen_move(sprite, x, y, next_dx=None, next_dy=None):
     moved = start.move(x, y)
     sprite.rect = moved.clamp(SCREEN_RECT)
 
-    if sprite.rect.centerx != moved.centerx:
-        sprite.next_dx = 0.0
+    if sprite.rect.centerx != moved.centerx:  # hit a side
+        sprite.next_dx = 0.0  # -sprite.dx * sprite.bounce
     elif next_dx is not None:
         sprite.next_dx = next_dx
 
-    if sprite.rect.centery != moved.centery:
-        sprite.next_dy = 0.0
+    if sprite.rect.centery != moved.centery:  # hit top or bottom
+        sprite.next_dy = 0.0  # -sprite.dy * sprite.bounce
     elif next_dy is not None:
         sprite.next_dy = next_dy
 
