@@ -1,11 +1,17 @@
-from pygame.locals import K_RIGHT, K_LEFT, K_SPACE
+from pygame.locals import *
 
 
-def on_key(bob, key_state):
+def on_key(self, key_state):
     if key_state[K_RIGHT]:
-        bob.dx = 5
+        self.dx = 5
     elif key_state[K_LEFT]:
-        bob.dx = -5
+        self.dx = -5
 
-    if key_state[K_SPACE]:
-        bob.dy = -30
+    if key_state[K_UP]:
+        self.dy = -30
+
+    if key_state[K_SPACE] and self.touching is not None:
+        touch = self.touching
+        if type(touch).__name__ == 'box':
+            touch.explode()
+

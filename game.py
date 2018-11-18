@@ -46,7 +46,8 @@ def main():
 
         # Apply keyboard state
         for s in all_group:
-            s.on_key(s, pygame.key.get_pressed())
+            s.on_key(pygame.key.get_pressed())
+            s.touching = None
             s.next_dx = s.dx
             s.next_dy = s.dy
             s.prev_rect = s.rect
@@ -83,6 +84,7 @@ def main():
                             if blame_y or (not blame_x and not blame_y):
                                 c.int_dy += decrement_of(c.int_dy)
                             log(2, f"{s.name} collided {c.name} having speed ({c.int_dx}, {c.int_dy})")
+                            s.touching = c
                             conserve_momentum(s, c)
 
         for s in all_group:

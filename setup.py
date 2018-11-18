@@ -9,19 +9,11 @@ WIN_STYLE = 0  # |FULLSCREEN
 
 AIR_RESISTANCE = 0.9
 
-
-# noinspection PyUnusedLocal
-def noop(*args):
-    pass
-
-
-OBJECT_DEFAULTS = {
-    'dx': 0.0,
-    'dy': 0.0,
+CLASS_DEFAULTS = {
     'mass': 10.0,
     'elasticity': 0.3,
     'buoyancy': 0.0,
-    'on_key': noop
+    'on_key': lambda *args: None
 }
 
 pygame.init()
@@ -34,22 +26,29 @@ background = pygame.Surface(SCREEN_RECT.size)
 
 object_names = set([fn.rsplit('.', 1)[0] for fn in listdir('objects')])
 object_types = {
-    name: {
+    name: type(name, (pygame.sprite.Sprite,), {
+        **CLASS_DEFAULTS,
         **({'image': pygame.image.load(bmp).convert()} if path.exists(bmp) else {}),
-        **(importlib.import_module('objects.' + name).__dict__ if path.exists('objects/%s.py' % name) else {})
-    }
-    for name, bmp in [(name, 'objects/%s.bmp' % name) for name in object_names]
+        **({k: v for k, v in importlib.import_module(f"objects.{name}").__dict__.items() if not k.startswith('__')}
+           if path.exists(f"objects/{name}.py") else {})
+    })
+    for name, bmp in [(name, f"objects/{name}.bmp") for name in object_names]
 }
 all_group = pygame.sprite.RenderUpdates()
 
+for key in object_types:
+    if hasattr(object_types[key], 'image'):
+        image = object_types[key].image
+        if image is not None:
+            print(f"{key} has dimensions {image.get_width(), image.get_height()}")
 
-def put(x, y, object_type_name):
-    sprite = pygame.sprite.Sprite(all_group)
+
+def put(x, y, object_type_name, object_name=None):
     object_type = object_types[object_type_name]
-    sprite.image = object_type['image']
+    sprite = object_type()
+    all_group.add(sprite)
     sprite.rect = sprite.image.get_rect(topleft=(x, y))
-    sprite.type_name = object_type_name
-    sprite.name = object_type_name + str(sum([1 for s in all_group.sprites() if s.type_name == object_type_name]))
+    sprite.name = object_name if object_name is not None else \
+        object_type_name + str(sum([1 for s in all_group.sprites() if type(s).__name__ == object_type_name]))
     # Set default values
-    for key in OBJECT_DEFAULTS:
-        setattr(sprite, key, object_type.get(key, OBJECT_DEFAULTS[key]))
+    sprite.dx = sprite.dy = 0.0

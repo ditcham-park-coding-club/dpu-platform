@@ -1,1 +1,3 @@
-# A box does nothing  - yet
+
+def explode(self):
+    self.kill()
