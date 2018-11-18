@@ -11,16 +11,16 @@ AIR_RESISTANCE = 0.9
 
 
 # noinspection PyUnusedLocal
-def noop(sprite, key_state):
+def noop(*args):
     pass
 
 
 OBJECT_DEFAULTS = {
-    'dx': 0,
-    'dy': 0,
-    'mass': 10,
+    'dx': 0.0,
+    'dy': 0.0,
+    'mass': 10.0,
     'elasticity': 0.3,
-    'buoyancy': 0,
+    'buoyancy': 0.0,
     'on_key': noop
 }
 
@@ -29,7 +29,6 @@ pygame.init()
 best_depth = pygame.display.mode_ok(SCREEN_RECT.size, WIN_STYLE, 32)
 screen = pygame.display.set_mode(SCREEN_RECT.size, WIN_STYLE, best_depth)
 pygame.display.set_caption('DPU Game')
-pygame.mouse.set_visible(0)
 
 background = pygame.Surface(SCREEN_RECT.size)
 

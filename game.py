@@ -1,109 +1,89 @@
 import runpy
 import sys
-import random
 
 import pygame
 from pygame.locals import *
 
 from setup import all_group, screen, SCREEN_RECT, background, AIR_RESISTANCE
 
+LOG_LEVEL = 1
 
-def log(string):
-    if True:
+
+def log(level, string):
+    if level <= LOG_LEVEL:
         print(string)
 
 
-def reverse(d, hint_d=0):
-    return 1 if d < 0 else -1 if d > 0 else reverse(hint_d) if hint_d != 0 else random.choice([1, -1])
-
-
-def back_off(s, dx, dy, hint_dx, hint_dy):
-    (dx, dy, hint_dx, hint_dy) = map(int, (dx, dy, hint_dx, hint_dy))
-    do_x = do_y = True
-    if abs(dx) != abs(dy):
-        do_x = abs(dx) > abs(dy)
-        do_y = abs(dy) > abs(dx)
-    elif abs(hint_dx) != abs(hint_dy):
-        do_x = abs(hint_dx) > abs(hint_dy)
-        do_y = abs(hint_dy) > abs(hint_dx)
-
-    rx = reverse(dx, hint_dx) if do_x else 0
-    ry = reverse(dy, hint_dy) if do_y else 0
-
-    log(f"{s.name} at:({s.rect.x}, {s.rect.y}) "
-        f"speed:({dx}, {dy}) "
-        f"hint:({hint_dx}, {hint_dy}) "
-        f"will back off:({rx}, {ry})")
-    s.rect.move_ip(rx, ry)
-    s.backoff_count = s.backoff_count + 1
-
-    return do_x, do_y
-
-
-def clip_dir_x(rect, clip):
-    return -1 if clip.left > rect.left else 1 if clip.right < rect.right else 0
-
-
-def clip_dir_y(rect, clip):
-    return -1 if clip.top > rect.top else 1 if clip.bottom < rect.bottom else 0
+def decrement_of(d):
+    return -1 if d > 0 else 1 if d < 0 else 0
 
 
 def main():
     # Run the requested level
     runpy.run_module("levels." + sys.argv[1])
 
+    # Report any initial collisions
+    any_bad = False
+    for s in all_group:
+        if not SCREEN_RECT.contains(s.rect):
+            clamped = s.rect.clamp(SCREEN_RECT)
+            log(1, f"{s.name} is not on the screen, try {clamped.x, clamped.y}")
+            any_bad = True
+        collisions = pygame.sprite.spritecollide(s, all_group, False)
+        collisions.remove(s)
+        for c in collisions:
+            any_bad = True
+            log(1, f"{s.name} is overlapping with {c.name}")
+
+    if any_bad:
+        return
+
     clock = pygame.time.Clock()
 
     while not has_quit():
-        log("---------------iteration----------------")
+        log(2, "---------------iteration----------------")
         all_group.clear(screen, background)
 
         # Apply keyboard state
         for s in all_group:
             s.on_key(s, pygame.key.get_pressed())
-
-        # Apply velocity
-        for s in all_group:
             s.next_dx = s.dx
             s.next_dy = s.dy
-            s.backoff_count = 0
-            s.rect.move_ip(s.dx, s.dy)  # involves integer truncation
+            s.prev_rect = s.rect
+            (s.int_dx, s.int_dy) = map(int, (s.dx, s.dy))
 
-        # Resolve collisions with walls and other sprites.
-        dirty_group = all_group.copy()
-        while dirty_group:
-            s = random.choice(dirty_group.sprites())  # dirty_group.sprites()[0]
-            dirty_group.remove(s)
+        changed = True
+        while changed:
+            changed = False
+            for s in all_group:
+                s.rect = s.prev_rect.move(s.int_dx, s.int_dy)
 
-            clamped = s.rect.clamp(SCREEN_RECT)
-            if clamped.center != s.rect.center:
+            for s in all_group:
                 # Wall collision
-                log(f"{s.name} collided wall")
-                clip = SCREEN_RECT.clip(s.rect)
-                axes = back_off(s,
-                                clip_dir_x(s.rect, clip) * (s.rect.width - clip.width),
-                                clip_dir_y(s.rect, clip) * (s.rect.height - clip.height),
-                                s.dx, s.dy)
-                dirty_group.add(s)
-                conserve_momentum(*axes, s)
-
-            # Other sprite collision
-            collided = pygame.sprite.spritecollide(s, all_group, False)
-            collided.remove(s)
-            if collided:
-                s2 = random.choice(collided)
-                log(f"{s.name} collided {s2.name}")
-                clip = s.rect.clip(s2.rect)
-                to_back_off = s if s.backoff_count < s2.backoff_count else \
-                    s2 if s2.backoff_count < s.backoff_count else random.choice([s, s2])
-                other = s2 if to_back_off is s else s
-                axes = back_off(to_back_off,
-                                to_back_off.dx - other.dx,
-                                to_back_off.dy - other.dy,
-                                -clip_dir_x(to_back_off.rect, clip) * (s.rect.width - clip.width),
-                                -clip_dir_y(to_back_off.rect, clip) * (s.rect.height - clip.height))
-                dirty_group.add(s, s2)
-                conserve_momentum(*axes, s, s2)
+                if not SCREEN_RECT.contains(s.rect):
+                    clamped = s.rect.clamp(SCREEN_RECT)
+                    s.int_dx = clamped.x - s.prev_rect.x
+                    s.int_dy = clamped.y - s.prev_rect.y
+                    conserve_momentum(s)
+                    log(2, f"{s.name} collided wall")
+                    changed = True
+                else:
+                    # Other sprite collision
+                    collisions = pygame.sprite.spritecollide(s, all_group, False)
+                    collisions.remove(s)
+                    if collisions:
+                        changed = True
+                        for c in collisions:
+                            # Would the axes in isolation have caused a collision?
+                            blame_x = c.prev_rect.move(c.int_dx, 0).colliderect(s.rect)
+                            blame_y = c.prev_rect.move(0, c.int_dy).colliderect(s.rect)
+                            # If we can't decide, move both
+                            if blame_x or (not blame_x and not blame_y):
+                                c.int_dx += decrement_of(c.int_dx)
+                            if blame_y or (not blame_x and not blame_y):
+                                c.int_dy += decrement_of(c.int_dy)
+                            log(2, f"{s.name} collided {c.name} having speed ({c.int_dx}, {c.int_dy})")
+                            conserve_momentum(s, c)
 
         for s in all_group:
             # Apply wind resistance
@@ -120,21 +100,22 @@ def main():
         clock.tick(40)
 
 
-def conserve_momentum(do_x, do_y, s, s2=None, recurse=True):
+def conserve_momentum(s, s2=None, recurse=True):
     if s2 is None:  # Wall collision
-        boink(s, do_x, do_y, -s.dx, -s.dy, s.elasticity, 1)
+        # boink(s, -s.dx, -s.dy, s.elasticity, 1)
+        s.next_dx = s.next_dy = 0
     else:
-        boink(s, do_x, do_y, s.dx - s2.dx, s.dy - s2.dy,
+        boink(s, s.dx - s2.dx, s.dy - s2.dy,
               (s.elasticity + s2.elasticity) / 2,
               s2.mass / (s.mass + s2.mass))
         if recurse:
-            conserve_momentum(do_x, do_y, s2, s, False)
+            conserve_momentum(s2, s, False)
 
 
-def boink(s, do_x, do_y, dx, dy, elasticity, momentum_share):
-    if do_x:
+def boink(s, dx, dy, elasticity, momentum_share):
+    if s.int_dx != 0:
         s.next_dx = dx * elasticity * momentum_share
-    if do_y:
+    if s.int_dy != 0:
         s.next_dy = dy * elasticity * momentum_share
 
 
