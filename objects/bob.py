@@ -10,8 +10,7 @@ def on_key(self, key_state):
     if key_state[K_UP]:
         self.dy = -30
 
-    if key_state[K_SPACE] and self.touching is not None:
-        touch = self.touching
-        if type(touch).__name__ == 'box':
-            touch.explode()
+    if key_state[K_SPACE] and self.hit is not None:
+        if type(self.hit).__name__ == 'box':
+            self.hit.explode()
 
