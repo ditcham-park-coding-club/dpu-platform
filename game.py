@@ -31,19 +31,19 @@ class FrameState(object):
         self._target = tuple(map(int, (sprite.dx, sprite.dy)))
         self._next = (sprite.dx, sprite.dy)
 
-    def try_move(self, bounce=False):
-        progress = self.get_progress()
+    def try_move(self, finalise=False):
+        progress = tuple(self._actual[axis] / self._target[axis] if self._target[axis] != 0 else 1.0 for axis in AXES)
         if any(p < 1.0 for p in progress):
             # Choose the axis with the furthest to go
             try_axis = progress.index(min(progress)) \
                 if any(p != progress[0] for p in progress) else random.choice(AXES)
-            if self._try_move(try_axis, bounce):
+            if self._try_move(try_axis, finalise):
                 return True
             else:
                 # Try the other axis
                 try_axis = next_axis(try_axis)
                 if progress[try_axis] < 1.0:
-                    return self._try_move(try_axis, bounce)
+                    return self._try_move(try_axis, finalise)
 
         return False
 
@@ -69,9 +69,6 @@ class FrameState(object):
         # Didn't move. Reset any putative movement.
         self.sprite.rect = prev_rect
         return False
-
-    def get_progress(self):
-        return tuple(self._actual[axis] / self._target[axis] if self._target[axis] != 0 else 1.0 for axis in AXES)
 
     def conserve_momentum(self, axis, other=None, recurse=True):
         if other is None:  # Wall collision
