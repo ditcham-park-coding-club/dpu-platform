@@ -2,7 +2,7 @@ from setup import put
 
 put(0, 300, 'wall')
 put(100, 32, 'balloon')
-put(32, 80, 'box')
+put(64, 48, 'box')
 put(64, 80, 'bob')
 put(342, 80, 'box')
 put(23, 112, 'box')

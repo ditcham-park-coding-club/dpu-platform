@@ -17,7 +17,7 @@ class Physical(pygame.sprite.Sprite):
 
     def __init__(self, *groups):
         super().__init__(*groups)
-        self.dx = self.dy = 0.0
+        (self.dx, self.dy) = (0.0, 0.0)
         self.carrying = []
 
     # noinspection PyStatementEffect,PyUnusedLocal,PyMethodMayBeStatic
