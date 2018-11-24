@@ -23,6 +23,10 @@ def next_axis(axis):
 class FrameState(object):
     def __init__(self, sprite: Physical):
         self.sprite = sprite
+        sprite.frame_state = self
+        # Apply keyboard state
+        sprite.on_key(pygame.key.get_pressed())
+        sprite.hit = None
         self._actual = (0, 0)
         self._target = tuple(map(int, (sprite.dx, sprite.dy)))
         self._next = (sprite.dx, sprite.dy)
@@ -59,6 +63,7 @@ class FrameState(object):
                 return True
             elif finalise:
                 for s2 in collided:
+                    self.sprite.hit = s2  # Will select the last hit
                     self.conserve_momentum(try_axis, s2.frame_state)
 
         # Didn't move. Reset any putative movement.
@@ -105,26 +110,21 @@ def main():
         log(2, "---------------iteration----------------")
         all_group.clear(screen, background)
 
-        # Apply keyboard state
-        for s in all_group:
-            s.on_key(pygame.key.get_pressed())
-            s.hit = None
-            s.frame_state = FrameState(s)
+        frame_states = list(map(FrameState, all_group))
 
         any_moved = True
         while any_moved:
             any_moved = False
-            for s in all_group:
-                any_moved = s.frame_state.try_move() or any_moved
+            for fs in frame_states:
+                any_moved = fs.try_move() or any_moved
 
-        for s in all_group:
-            s.frame_state.try_move(True)
+        for fs in frame_states:
+            fs.try_move(True)
 
-        for s in all_group:
-            s.frame_state.close()
+        for fs in frame_states:
+            fs.close()
 
-        dirty = all_group.draw(screen)
-        pygame.display.update(dirty)
+        pygame.display.update(all_group.draw(screen))
 
         # draw the scene
         clock.tick(40)
