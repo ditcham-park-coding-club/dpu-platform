@@ -1,5 +1,5 @@
-from os import listdir, path
 import importlib
+from os import listdir, path
 
 import pygame
 from pygame.locals import *
@@ -33,14 +33,23 @@ pygame.display.set_caption('DPU Game')
 
 background = pygame.Surface(SCREEN_RECT.size)
 
+
+def image_path(name):
+    return f"objects/{name}.bmp"
+
+
+def load_image(name):
+    return pygame.image.load(image_path(name)).convert()
+
+
 object_names = set([fn.rsplit('.', 1)[0] for fn in listdir('objects')])
 object_types = {
     name: type(name, (Physical,), {
-        **({'image': pygame.image.load(bmp).convert()} if path.exists(bmp) else {}),
+        **({'image': load_image(name)} if path.exists(image_path(name)) else {}),
         **({k: v for k, v in importlib.import_module(f"objects.{name}").__dict__.items() if not k.startswith('__')}
            if path.exists(f"objects/{name}.py") else {})
     })
-    for name, bmp in [(name, f"objects/{name}.bmp") for name in object_names]
+    for name in object_names
 }
 all_group = pygame.sprite.RenderUpdates()
 

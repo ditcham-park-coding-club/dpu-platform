@@ -8,9 +8,8 @@ def on_key(self, key_state):
         self.dx = -5
 
     if key_state[K_UP]:
-        self.dy = -30
+        self.dy = -20
 
     if key_state[K_SPACE] and self.hit is not None:
         if type(self.hit).__name__ == 'box':
             self.hit.explode()
-
