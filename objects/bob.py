@@ -1,7 +1,13 @@
 from pygame.locals import *
 
+sayings = ["Hi!",
+           "My name is Bob",
+           "Move me with the LEFT and RIGHT keys",
+           "Jump me with the UP key",
+           "Press SPACE to do something"]
 
-def on_key(self, key_state):
+
+def on_frame(self, key_state):
     if key_state[K_RIGHT]:
         self.dx = 5
     elif key_state[K_LEFT]:
@@ -10,6 +16,9 @@ def on_key(self, key_state):
     if key_state[K_UP]:
         self.dy = -20
 
-    if key_state[K_SPACE] and self.hit is not None:
-        if type(self.hit).__name__ == 'box':
-            self.hit.explode()
+    if key_state[K_SPACE]:
+        if self.hit is not None and hasattr(self.hit, 'action'):
+            self.hit.action()
+
+    if sayings and self.speech is None:
+        self.say(sayings.pop(0))

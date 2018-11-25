@@ -1,3 +1,4 @@
+import random
 import runpy
 import sys
 
@@ -14,8 +15,6 @@ class FrameState(object):
     def __init__(self, sprite: Physical):
         self.sprite = sprite
         sprite.frame_state = self
-        # Apply keyboard state
-        sprite.on_key(pygame.key.get_pressed())
         sprite.hit = None
         self._actual = (0, 0)
         self._target = tuple(map(int, (sprite.dx, sprite.dy)))
@@ -91,8 +90,13 @@ def main():
     while not has_quit():
         log(2, "---------------iteration----------------")
         all_group.clear(screen, background)
+        all_group.update()
 
-        frame_states = list(map(FrameState, all_group))
+        # Apply keyboard state
+        for s in object_group:
+            s.on_frame(pygame.key.get_pressed())
+
+        frame_states = list(map(FrameState, object_group))
 
         any_moved = True
         while any_moved:
@@ -109,7 +113,7 @@ def main():
         pygame.display.update(all_group.draw(screen))
 
         # draw the scene
-        clock.tick(40)
+        clock.tick(FRAME_RATE)
 
 
 def has_quit():
