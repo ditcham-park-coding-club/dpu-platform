@@ -1,4 +1,5 @@
 import importlib
+import random
 from os import listdir, path
 
 import pygame
@@ -6,8 +7,13 @@ from pygame.locals import *
 
 SCREEN_RECT = Rect(0, 0, 640, 480)
 WIN_STYLE = 0  # |FULLSCREEN
-
 AIR_RESISTANCE = 0.9
+LOG_LEVEL = 1
+
+
+def log(level, string):
+    if level <= LOG_LEVEL:
+        print(string)
 
 
 class Physical(pygame.sprite.Sprite):
@@ -57,7 +63,7 @@ for key in object_types:
     if hasattr(object_types[key], 'image'):
         image = object_types[key].image
         if image is not None:
-            print(f"{key} has dimensions {image.get_width(), image.get_height()}")
+            log(1, f"{key} has dimensions {image.get_width(), image.get_height()}")
 
 
 def put(x, y, object_type_name, object_name=None):
@@ -67,3 +73,44 @@ def put(x, y, object_type_name, object_name=None):
     sprite.rect = sprite.image.get_rect(topleft=(x, y))
     sprite.name = object_name if object_name is not None else \
         object_type_name + str(sum([1 for s in all_group.sprites() if type(s).__name__ == object_type_name]))
+
+    if not SCREEN_RECT.contains(sprite.rect):
+        sprite.rect.clamp_ip(SCREEN_RECT)
+        log(1, f"{sprite.name} was not on the screen, moved to {sprite.rect.x, sprite.rect.y}")
+
+    warn = False
+    c = first(all_collisions(sprite))
+    while c:
+        warn = True
+        sprite.rect.clamp_ip(random.choice(list(r for r in outside_rects(c.rect)
+                                                if r.width >= sprite.rect.width and r.height >= sprite.rect.height)))
+        c = first(all_collisions(sprite))
+    if warn:
+        log(1, f"{sprite.name} overlapped with other sprites, moved to {sprite.rect.x, sprite.rect.y}")
+
+
+def all_collisions(sprite):
+    for c in pygame.sprite.spritecollide(sprite, all_group, False):
+        if c is not sprite:
+            yield c
+
+
+def first(gen):
+    for item in gen:
+        return item
+    return None
+
+
+def outside_rects(rect):
+    outside = SCREEN_RECT.copy()
+    outside.right = rect.left
+    yield outside
+    outside = SCREEN_RECT.copy()
+    outside.bottom = rect.top
+    yield outside
+    outside = SCREEN_RECT.copy()
+    outside.left = rect.right
+    yield outside
+    outside = SCREEN_RECT.copy()
+    outside.top = rect.bottom
+    yield outside

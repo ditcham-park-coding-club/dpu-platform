@@ -1,19 +1,9 @@
-import random
 import runpy
 import sys
 
-import pygame
-from pygame.locals import *
+from setup import *
 
-from setup import all_group, screen, SCREEN_RECT, background, AIR_RESISTANCE, Physical
-
-LOG_LEVEL = 1
 AXES = [0, 1]
-
-
-def log(level, string):
-    if level <= LOG_LEVEL:
-        print(string)
 
 
 def next_axis(axis):
@@ -55,8 +45,7 @@ class FrameState(object):
             if finalise:
                 self.conserve_momentum(try_axis)
         else:
-            collided = pygame.sprite.spritecollide(self.sprite, all_group, False)
-            collided.remove(self.sprite)
+            collided = list(all_collisions(self.sprite))
             if not collided:
                 # Moved! Increment actual progress.
                 self._actual = tuple(self._actual[axis] + try_move[axis] for axis in AXES)
@@ -97,10 +86,6 @@ def main():
     # Run the requested level
     runpy.run_module("levels." + sys.argv[1])
 
-    # Report any initial collisions
-    if not valid_level():
-        return
-
     clock = pygame.time.Clock()
 
     while not has_quit():
@@ -125,21 +110,6 @@ def main():
 
         # draw the scene
         clock.tick(40)
-
-
-def valid_level():
-    okay = True
-    for s in all_group:
-        if not SCREEN_RECT.contains(s.rect):
-            clamped = s.rect.clamp(SCREEN_RECT)
-            log(1, f"{s.name} is not on the screen, try {clamped.x, clamped.y}")
-            okay = False
-        collisions = pygame.sprite.spritecollide(s, all_group, False)
-        collisions.remove(s)
-        for c in collisions:
-            okay = False
-            log(1, f"{s.name} is overlapping with {c.name}")
-    return okay
 
 
 def has_quit():
