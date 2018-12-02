@@ -10,5 +10,5 @@ def on_frame(self, key_state):
         self.dy = -10
 
     if key_state[K_SPACE]:
-        if self.hit is not None and hasattr(self.hit, 'action'):
+        if self.hit is not None:
             self.hit.action()

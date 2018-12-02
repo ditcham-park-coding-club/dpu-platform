@@ -1,14 +1,19 @@
 from pygame.locals import *
+from setup import Physical
 
 mass = 0.1
 
 
+def __init__(self):
+    Physical.__init__(self)
+    self.neep = False
+
+
 def on_frame(self, key_state):
-    if not hasattr(self, 'neep'):
+    if not self.neep:
         self.say('neep')
         self.neep = True
 
-def on_frame(self, key_state):
     if key_state[K_RIGHT]:
         self.dx = 5
     elif key_state[K_LEFT]:
@@ -18,5 +23,5 @@ def on_frame(self, key_state):
         self.dy = -10
 
     if key_state[K_SPACE]:
-        if self.hit is not None and hasattr(self.hit, 'action'):
+        if self.hit is not None:
             self.hit.action()

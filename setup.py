@@ -21,14 +21,15 @@ class Physical(pygame.sprite.Sprite):
     mass = 10.0
     elasticity = 0.3
     buoyancy = 0.0
+    portable = False
 
-    def __init__(self, *groups):
-        super().__init__(*groups)
+    def __init__(self):
+        super().__init__()
         self.rect = None
         (self.dx, self.dy) = (0.0, 0.0)
         self.carrying = []
         index = sum(1 for s in object_group.sprites() if type(s).__name__ == type(self).__name__)
-        self.name = f"{type(self).__name__}{index}"
+        self.name = f"{type(self).__name__}{index + 1}"
         self.speech = None
 
     def __str__(self):
@@ -42,20 +43,33 @@ class Physical(pygame.sprite.Sprite):
         if self.speech is not None and not self.speech.alive():
             self.speech = None
 
-    def say(self, msg, color=Color('white')):
+    def say(self, msg, speech_color=Color('white')):
         if self.speech is not None:
             self.speech.kill()
-        self.speech = Speech(self, msg, color)
+        self.speech = Speech(self, msg, speech_color)
+
+    def action(self):
+        pass
 
 
-class Speech(pygame.sprite.Sprite):
-    def __init__(self, speaker, msg, color=Color('white')):
+class Text(pygame.sprite.Sprite):
+    def __init__(self, msg, text_color=Color('white')):
         super().__init__(all_group)
-        self.speaker = speaker
         self.font = pygame.font.Font(None, 25)
         self.life = FRAME_RATE * log10(len(msg))
-        self.image = self.font.render(msg, 0, color)
+        self.image = self.font.render(msg, 0, text_color)
         self.rect = self.image.get_rect()
+
+    def update(self, *args):
+        self.life = self.life - 1
+        if self.life <= 0:
+            self.kill()
+
+
+class Speech(Text):
+    def __init__(self, speaker, msg, text_color=Color('white')):
+        super().__init__(msg, text_color)
+        self.speaker = speaker
         self._align()
 
     def _align(self):
@@ -65,10 +79,8 @@ class Speech(pygame.sprite.Sprite):
             self.rect.clamp_ip(space)
 
     def update(self, *args):
-        self.life = self.life - 1
-        if self.life <= 0:
-            self.kill()
-        else:
+        super().update(*args)
+        if self.alive():
             self._align()
 
 
@@ -81,6 +93,10 @@ pygame.display.set_caption('DPU Game')
 background = pygame.Surface(SCREEN_RECT.size)
 
 
+def list_str(l):
+    return ",".join(map(str, l))
+
+
 def image_path(name):
     return f"objects/{name}.bmp"
 
@@ -89,14 +105,12 @@ def load_image(name):
     return pygame.image.load(image_path(name)).convert()
 
 
-def put(x, y, object_type_name, object_name=None):
-    object_type = object_types[object_type_name]
-    sprite = object_type()
+def put(x, y, type_name, *init_args):
+    object_type = object_types[type_name]
+    sprite = object_type(*init_args)
     sprite.add(all_group, object_group)
 
     sprite.rect = sprite.image.get_rect(topleft=(x, y))
-    if object_name is not None:
-        sprite.name = object_name
 
     if not SCREEN_RECT.contains(sprite.rect):
         sprite.rect.clamp_ip(SCREEN_RECT)
@@ -110,18 +124,19 @@ def put(x, y, object_type_name, object_name=None):
     if choose_next.chosen():
         log(1, f"{sprite.name} overlapped with other sprites, moved to {sprite.rect.x, sprite.rect.y}")
 
+    return sprite
+
 
 object_names = set([fn.rsplit('.', 1)[0] for fn in listdir('objects')])
 object_types = {
     name: type(name, (Physical,), {
         **({'image': load_image(name)} if path.exists(image_path(name)) else {}),
-        **({k: v for k, v in import_module(f"objects.{name}").__dict__.items() if not k.startswith('__')}
+        **({k: v for k, v in import_module(f"objects.{name}").__dict__.items()}
            if path.exists(f"objects/{name}.py") else {})
     })
     for name in object_names
 }
 all_group = pygame.sprite.RenderUpdates()
-
 object_group = pygame.sprite.Group()
 
 for key in object_types:
