@@ -1,7 +1,7 @@
 from pygame.locals import K_RIGHT, K_LEFT, K_SPACE, K_UP, K_DOWN
 
 
-def on_frame(bob, key_state):
+def on_key(bob, key_state):
     if key_state[K_RIGHT]:
         bob.dx = 10
     elif key_state[K_LEFT]:

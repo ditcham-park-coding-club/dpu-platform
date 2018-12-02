@@ -42,19 +42,19 @@ class Physical(pygame.sprite.Sprite):
         if self.speech is not None and not self.speech.alive():
             self.speech = None
 
-    def say(self, msg):
+    def say(self, msg, color=Color('white')):
         if self.speech is not None:
             self.speech.kill()
-        self.speech = Speech(self, msg)
+        self.speech = Speech(self, msg, color)
 
 
 class Speech(pygame.sprite.Sprite):
-    def __init__(self, speaker, msg):
+    def __init__(self, speaker, msg, color=Color('white')):
         super().__init__(all_group)
         self.speaker = speaker
         self.font = pygame.font.Font(None, 25)
         self.life = FRAME_RATE * log10(len(msg))
-        self.image = self.font.render(msg, 0, Color('white'))
+        self.image = self.font.render(msg, 0, color)
         self.rect = self.image.get_rect()
         self._align()
 

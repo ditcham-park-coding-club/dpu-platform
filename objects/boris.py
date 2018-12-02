@@ -1,7 +1,11 @@
 from pygame.locals import *
 
 sayings = ["Hi!",
-           "Your object is to make me into a caterpillar in the right direction!"]
+           "My name is Boris",
+           "Move me with the LEFT and RIGHT keys",
+           "Jump me with the UP key",
+           "Press SPACE to do something",
+           "Let's have fun together!"]
 
 
 def on_frame(self, key_state):

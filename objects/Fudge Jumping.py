@@ -1,9 +1,5 @@
 from pygame.locals import *
 
-sayings = ["Hi!",
-           "Your object is to make me into a caterpillar in the right direction!"]
-
-
 def on_frame(self, key_state):
     if key_state[K_RIGHT]:
         self.dx = 5
@@ -16,6 +12,3 @@ def on_frame(self, key_state):
     if key_state[K_SPACE]:
         if self.hit is not None and hasattr(self.hit, 'action'):
             self.hit.action()
-
-    if sayings and self.speech is None:
-        self.say(sayings.pop(0))
