@@ -31,6 +31,7 @@ class Physical(pygame.sprite.Sprite):
         index = sum(1 for s in object_group.sprites() if type(s).__name__ == type(self).__name__)
         self.name = f"{type(self).__name__}{index + 1}"
         self.speech = None
+        self.hit = None
 
     def __str__(self):
         return self.name
