@@ -2,6 +2,7 @@ from pygame.locals import *
 from setup import Physical
 
 mass = 0.1
+buoyancy = 11
 
 
 def __init__(self):
@@ -13,15 +14,3 @@ def on_frame(self, key_state):
     if not self.neep:
         self.say('neep')
         self.neep = True
-
-    if key_state[K_RIGHT]:
-        self.dx = 5
-    elif key_state[K_LEFT]:
-        self.dx = -5
-
-    if key_state[K_UP]:
-        self.dy = -10
-
-    if key_state[K_SPACE]:
-        if self.hit is not None:
-            self.hit.action()

@@ -1,6 +1,6 @@
 from setup import put
 
-put(0, 448, 'box')
+put(0, 448, 'Box Couch')
 put(32, 448, 'box')
 put(64, 448, 'box')
 put(128, 448, 'box')
@@ -18,7 +18,7 @@ put(512, 448, 'box')
 put(544, 448, 'box')
 put(576, 448, 'box')
 put(608, 448, 'box')
-put(608, 448, 'Fudge Jumping')
+put(608, 300, 'Fudge Jumping')
 
 put(256, 416, 'box')
 put(128, 416, 'box')
@@ -46,4 +46,4 @@ put(384, 384, 'box')
 put(416, 384, 'box')
 put(512, 384, 'box')
 put(544, 384, 'box')
-put(608, 384, 'box')
+put(608, 0, 'Pumpkin')

@@ -1,0 +1,15 @@
+from setup import put
+
+put(224, 0, 'thatguy')
+put(224, 30, 'thatguy')
+put(224, 60, 'thatguy')
+put(224, 90, 'thatguy')
+put(224, 120, 'thatguy')
+put(224, 150, 'thatguy')
+put(224, 180, 'thatguy')
+put(224, 210, 'thatguy')
+put(224, 240, 'thatguy')
+put(224, 270, 'thatguy')
+put(224, 300, 'thatguy')
+put(224, 330, 'thatguy')
+put(224, 360, 'thatguy')

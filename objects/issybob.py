@@ -1,8 +1,12 @@
 from pygame.locals import *
 
 sayings = ["Hi!",
-           "Your object is to release all the balloons"]
-
+            "I'm a happinator.",
+            "That means I make people who feel unhappy...",
+            "Happy again!!",
+            "Help me on my quest for happiness.",
+            "And remember...",
+            "Nothing cheers people up like balloons!"]
 
 def on_frame(self, key_state):
     if key_state[K_RIGHT]:

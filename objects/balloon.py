@@ -1,3 +1,3 @@
-mass = 0.1
-buoyancy = 11
+mass = 0.01
+buoyancy = 12
 portable = True

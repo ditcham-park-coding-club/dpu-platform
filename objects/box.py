@@ -7,4 +7,4 @@ mass = 1
 
 def action(self):
     self.kill()
-    put(self.rect.x, self.rect.y, random.choice(['incoherentscreaming', 'balloon']))
+    put(self.rect.x, self.rect.y, random.choice(['balloon']))
