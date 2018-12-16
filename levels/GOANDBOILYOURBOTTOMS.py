@@ -1,9 +1,12 @@
 from setup import put
 
+instructions = 'Get rid of the boxes to push Racist Ralph into the bin!'
+
+next_level = 'example'
+
 put(0, 100, 'wall')
 put(0, 300, 'wall')
-put(200,140, 'racist ralph')
-#ralph needs to be collectable and he needs to have no gravity applied to him also he needs to randomly say stuff
+racistralph = put(200,140, 'racist ralph')
 put(10, 448, 'bob')
 put(630,0, 'wall')
 put(630,100, 'wall')
@@ -28,5 +31,8 @@ put(239,240, 'box')
 put(239,200, 'box')
 put(200,100, 'box')
 put(200,60, 'box')
-put(500, 60, 'bin')
-#i need the bin to have the same stuff applied to it as stuff like couch and wall. unmoveable with gravity applied 
+bin = put(500, 60, 'bin')
+
+def is_complete():
+    if racistralph.hit is bin:
+        return True

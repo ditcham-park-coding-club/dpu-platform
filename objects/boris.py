@@ -2,7 +2,7 @@ from pygame.locals import *
 from setup import list_str
 
 sayings = ["Hi!",
-           "My name is Boris",
+           "My name is Alexander Hamilton",
            "Move me with the LEFT and RIGHT keys",
            "Jump me with the UP key",
            "Press SPACE to do something",

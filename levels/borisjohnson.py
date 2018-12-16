@@ -1,11 +1,13 @@
 from setup import put
 
-put(32, 0, 'box')
+instructions = " release all the balloons and release the lonely person. Collect them."
+
+put(0, 0, 'box')
+put(0, 32, 'box')
+put(32, 32, 'box')
+put(32, 0, 'bob')
+put(0, 64, 'box')
+put(32, 200, 'box')
 put(64, 0, 'box')
-put(96, 0, 'box')
-put(128, 0, 'box')
-put(160, 0, 'box')
-put(0, 0, 'issybob')
-put(224, 0, 'box')
-put(403, 64, 'ooh')
-put(403, 0, 'box')
+put(64, 100, 'box')
+put(96, 100, 'box')

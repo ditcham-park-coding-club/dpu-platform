@@ -128,6 +128,7 @@ def put(x, y, type_name, *init_args):
     return sprite
 
 
+object_group = pygame.sprite.Group()
 object_names = set([fn.rsplit('.', 1)[0] for fn in listdir('objects')])
 object_types = {
     name: type(name, (Physical,), {
@@ -138,7 +139,6 @@ object_types = {
     for name in object_names
 }
 all_group = pygame.sprite.RenderUpdates()
-object_group = pygame.sprite.Group()
 
 for key in object_types:
     if hasattr(object_types[key], 'image'):
