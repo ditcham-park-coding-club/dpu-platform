@@ -1,6 +1,8 @@
-# DPU Beats
+# DPU Platform Puzzle Game
+
+## Getting Started
 
 1. Install [Python 3](https://www.python.org/downloads/)
-1. `pip install pygame --user`
-1. Add a music module to the scores folder, like [example.py](/scores/example.py)
-1. Run with main.py and the module name, e.g. `python3 main.py example`
+1. Install pygame by running `pip install pygame --user`
+1. Run one of the [levels](/levels), e.g. `python game.py example`
+1. To create a new level, have a look at the [levels README](/levels/README.md)

@@ -48,9 +48,9 @@ def main():
         for fs in frame_states:
             fs.close()
 
+        # draw the scene
         pygame.display.update(all_group.draw(screen))
 
-        # draw the scene
         clock.tick(FRAME_RATE)
 
 
