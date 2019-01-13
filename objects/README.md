@@ -21,7 +21,7 @@ You can add the following kinds of things to an object's script.
 * `buoyancy`: This is the floaty-ness of the object. Gravity pulls objects down, and this pulls objects up. A value of ten will make the object float in the middle of the screen. Less than that, it will sink under gravity; more, and it will float to the top of the screen. If you don't include this, the value will be `0.0` (not floaty at all).
 * `portable`: This can be either `True` or `False`. By itself this property does nothing, but another object (say, a character), might check if an object is portable and allow the player to pick it up.
 * `on_frame`: This is a function that defines how the object behaves all the time. We'll look more at this in the Behaviour section below.
-* `action`: A function that defines some behaviour of the object _when another object, like a character, interacts with it_. We'll also see how this works below.
+* `action`: A function that defines some behaviour of the object when another object, like a character, interacts with it. We'll also see how this works below.
 
 You can also add any other code you like to the script. This code will run right at the beginning of the game, before anything is shown on the screen.
 
@@ -35,20 +35,20 @@ def on_frame(self, key_state):
 ```
 There are two _arguments_ to the function, which must exist or the program will crash. These are `self` and `key_state`.
 
-`self` represents the current copy of the object, which is being updated. Remember that there can be several copies of the same object in a level. Each copy (called an _instance_) has all the properties that we defined above, with the same values, but _also_ has some additional properties, which can be _different_ to any other copy, or instance. In `on_frame`, the values of these properties can be _changed_ - and this will not affect any other copy of the object, just this one. These are:
+The value of `self` is the current copy of the object, which is being updated. Remember that there can be several copies of the same object in a level. Each copy (called an _instance_) has all the properties that we defined above, with the same values, but _also_ has some additional properties, which can be _different_ to any other copy, or instance. In `on_frame`, the values of these properties can be _changed_ - and this will not affect any other copy of the object, just this one. These are:
 * `self.name`: the name of this copy. This starts out as the object name with a number added to it.
 * `self.image`: the image of this copy. This is a pygame object called a [Surface](https://www.pygame.org/docs/ref/surface.html).
 * `self.rect`: the location and size of this copy. This is a pygame object called a [Rect](https://www.pygame.org/docs/ref/rect.html).
-* `self.hit`: if the copy is touching another object, then the value of this property will be whatever it is touching. Otherwise, it will be `None`.
-* `self.speech`: if this copy is saying something, this will not be `None`.
-* `self.carrying`: a list of other objects that this copy is carrying. You can add and remove from this list.
+* `self.hit`: if the copy is touching another object, then the value of this property will be whatever it is touching. Otherwise, it will be `None`. If it's not `None`, you might consider executing the object's `action` function, like this: `self.hit.action()`.
+* `self.speech`: if this copy is currently saying something, this will not be `None`.
+* `self.carrying`: a list of other objects that this copy is carrying. You can add to and remove from this list.
 
 `key_state` contains any keys that are currently pressed by the player. This is a data structure called a _map_. To check whether a key is pressed, we have a look in the map using an expression like this:
 ```python
   if key_state[K_UP]:
     # Do something
 ```
-The key names, like `K_UP` (for the up arrow key) are defined in the [pygame documentation](https://www.pygame.org/docs/ref/key.html). To use these names, you have to include the following at the top of your object script:
+The key names, like `K_UP` (for the up arrow key) are defined in [pygame](https://www.pygame.org/docs/ref/key.html). To use these names, you have to include the following at the top of your object script:
 ```python
 from pygame.locals import *
 ```
