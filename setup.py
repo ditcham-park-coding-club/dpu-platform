@@ -32,6 +32,7 @@ class Physical(pygame.sprite.Sprite):
         self.name = f"{type(self).__name__}{index + 1}"
         self.speech = None
         self.hit = None
+        self.hit_wall = (0, 0)
 
     def __str__(self):
         return self.name

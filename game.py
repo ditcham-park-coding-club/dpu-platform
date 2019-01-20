@@ -32,7 +32,7 @@ def main():
 
         # Apply keyboard state
         for s in object_group:
-            s.on_frame(pygame.key.get_pressed())
+            s.on_frame(pygame.key.get_pressed(), level)
 
         frame_states = list(map(FrameState, object_group))
 

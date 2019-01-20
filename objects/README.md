@@ -30,18 +30,20 @@ Bear in mind that all these properties will apply to every copy of that object i
 ## Object Behaviour
 An object's behaviour is entirely defined inside a function called `on_frame`. This function is run 40 times a second, every time the screen is updated. It looks something like this:
 ```python
-def on_frame(self, key_state):
+def on_frame(self, key_state, level):
   # Some code
 ```
-There are two _arguments_ to the function, which must exist or the program will crash. These are `self` and `key_state`.
+There are three _arguments_ to the function, which must exist or the program will crash. These are `self`, `key_state` and `level`.
 
-The value of `self` is the current copy of the object, which is being updated. Remember that there can be several copies of the same object in a level. Each copy (called an _instance_) has all the properties that we defined above, with the same values, but _also_ has some additional properties, which can be _different_ to any other copy, or instance. In `on_frame`, the values of these properties can be _changed_ - and this will not affect any other copy of the object, just this one. These are:
+`self` is the current copy of the object, which is being updated. Remember that there can be several copies of the same object in a level. Each copy (called an _instance_) has all the properties that we defined above, with the same values, but also has some additional properties, which can be _different_ to any other copy, or instance. In `on_frame`, the values of these properties can be inspected and _changed_ - and this will not affect any other copy of the object, just this one. These are:
 * `self.name`: the name of this copy. This starts out as the object name with a number added to it.
 * `self.image`: the image of this copy. This is a pygame object called a [Surface](https://www.pygame.org/docs/ref/surface.html).
 * `self.rect`: the location and size of this copy. This is a pygame object called a [Rect](https://www.pygame.org/docs/ref/rect.html).
 * `self.hit`: if the copy is touching another object, then the value of this property will be whatever it is touching. Otherwise, it will be `None`. If it's not `None`, you might consider executing the object's `action` function, like this: `self.hit.action()`.
 * `self.speech`: if this copy is currently saying something, this will not be `None`.
 * `self.carrying`: a list of other objects that this copy is carrying. You can add to and remove from this list.
+* `self.dx`: the horizontal speed of the object (it stands for "delta x"). A value of about 10 will make the object smoothly move to the right; -10 will make it move to the left.
+* `self.dy`: the vertical speed of the object (it stands for "delta y"). A value of about 10 will make the object smoothly move down (remember, the y-axis is downward); -10 will make it move up. But of course gravity will take hold as soon as the object is moving upward!
 
 `key_state` contains any keys that are currently pressed by the player. This is a data structure called a _map_. To check whether a key is pressed, we have a look in the map using an expression like this:
 ```python
@@ -52,3 +54,5 @@ The key names, like `K_UP` (for the up arrow key) are defined in [pygame](https:
 ```python
 from pygame.locals import *
 ```
+
+`level` is the level that we're on. This is a Python _map_ as well, containing all the variables in your level, accessed by the variable name as a string. For example, if you have a variable called `boris`, you can look at the variable in the level object like this: `level['boris'])`. This is a bit awkward, but it allows you to change the level from inside an object.

@@ -14,6 +14,7 @@ class FrameState(object):
         self.sprite = sprite
         sprite.frame_state = self
         sprite.hit = None
+        sprite.hit_wall = (0, 0)
         self._actual = (0, 0)
         self._target = tuple(map(int, (sprite.dx, sprite.dy)))
         self._next = (sprite.dx, sprite.dy)
@@ -39,6 +40,7 @@ class FrameState(object):
         prev_rect = self.sprite.rect
         self.sprite.rect = prev_rect.move(*try_move)
         if self.sprite.rect.clamp(SCREEN_RECT).topleft != self.sprite.rect.topleft:
+            self.sprite.hit_wall = try_move
             if finalise:
                 self.conserve_momentum(try_axis)
         else:
@@ -49,7 +51,9 @@ class FrameState(object):
                 return True
             elif finalise:
                 for s2 in collided:
-                    self.sprite.hit = s2  # Will select the last hit
+                    # Update the hit and hit_by fields to capture the last hit
+                    self.sprite.hit = s2
+                    s2.hit = self.sprite
                     self.conserve_momentum(try_axis, s2.frame_state)
 
         # Didn't move. Reset any putative movement.

@@ -4,7 +4,7 @@ sayings = ["Hi!",
            "Your object is to release all the balloons"]
 
 
-def on_frame(self, key_state):
+def on_frame(self, key_state, level):
     if key_state[K_RIGHT]:
         self.dx = 5
     elif key_state[K_LEFT]:
@@ -19,3 +19,6 @@ def on_frame(self, key_state):
 
     if sayings and self.speech is None:
         self.say(sayings.pop(0))
+
+    if self.hit is not None:
+        print(self.hit)

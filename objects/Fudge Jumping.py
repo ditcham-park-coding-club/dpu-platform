@@ -1,6 +1,6 @@
 from pygame.locals import *
 
-def on_frame(self, key_state):
+def on_frame(self, key_state, level):
     if key_state[K_RIGHT]:
         self.dx = 5
     elif key_state[K_LEFT]:

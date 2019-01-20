@@ -1,7 +1,5 @@
 from setup import put
 
-
-
 put(128, 448, 'box')
 put(160, 448, 'box')
 put(192, 448, 'box')
@@ -28,7 +26,7 @@ put(192, 384, 'box')
 put(224, 384, 'box')
 put(384, 384, 'box')
 put(416, 384, 'box')
-put(512, 384, 'box')
+put(512, 384, 'Picture Of A Picture')
 put(512, 0, 'Box Couch')
 put(0, 0, 'Pumpkin')
 put(571, 0, 'marshmallow!!')
