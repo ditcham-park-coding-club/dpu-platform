@@ -29,7 +29,8 @@ class Physical(pygame.sprite.Sprite):
         (self.dx, self.dy) = (0.0, 0.0)
         self.carrying = []
         index = sum(1 for s in object_group.sprites() if type(s).__name__ == type(self).__name__)
-        self.name = f"{type(self).__name__}{index + 1}"
+        self.type_name = type(self).__name__
+        self.name = f"{self.type_name}{index + 1}"
         self.speech = None
         self.hit = None
         self.hit_wall = (0, 0)

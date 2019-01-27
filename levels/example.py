@@ -19,7 +19,7 @@ put(300, 80, 'box')
 def is_complete():
     balloon_count = 0
     for obj in boris.carrying:
-        if type(obj).__name__ == 'balloon':
+        if obj.type_name == 'balloon':
             balloon_count = balloon_count + 1
 
     if balloon_count >= 2:

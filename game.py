@@ -4,6 +4,8 @@ import sys
 from framestate import FrameState
 from setup import *
 
+MAX_ITERATIONS = 1000
+WARN_ITERATIONS = 100
 
 def main():
     # Run the requested start level
@@ -37,10 +39,15 @@ def main():
         frame_states = list(map(FrameState, object_group))
 
         any_moved = True
-        while any_moved:
+        iterations = 0
+        while any_moved and iterations < MAX_ITERATIONS:
+            iterations = iterations + 1
             any_moved = False
             for fs in frame_states:
                 any_moved = fs.try_move() or any_moved
+
+        if iterations > WARN_ITERATIONS:
+            log(1, f'Warning: Lots of iterations: {iterations}')
 
         for fs in frame_states:
             fs.try_move(True)
