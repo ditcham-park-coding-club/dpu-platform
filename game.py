@@ -19,7 +19,8 @@ def main():
             all_group.empty()
             object_group.empty()
             next_level_name = level.get('next_level')
-            announce = Text('Level Complete' if next_level_name else 'Game Over')
+            complete_msg = level.get('level_complete') if 'level_complete' in level else 'Level Complete'
+            announce = Text(complete_msg if next_level_name else 'Game Over')
             announce.rect.center = SCREEN_RECT.center
 
         if announce and not announce.alive():

@@ -1,12 +1,14 @@
 from setup import put
 
-instructions = 'Get rid of the boxes to push Arrogant Andy into the bin!'
+instructions = 'Get rid of the boxes to push Dodgy Dan into the bin!'
 
-next_level = 'GOANDBOILYOURBOTTOMS#5'
+level_complete = 'Congrats! you have rid a small, virtual, non-existent world of \n a little bit of non-existent evil. you cant do everything.'
+
+next_level = 'borisjohnson'
 
 put(0, 100, 'wall')
 put(0, 300, 'wall')
-arrogantandy = put(200,140, 'arrogantandy')
+dodgydan = put(200,140, 'dodgydan')
 put(10, 448, 'bob')
 put(630,0, 'wall')
 put(630,100, 'wall')
@@ -34,5 +36,5 @@ put(200,60, 'box')
 bin = put(500, 60, 'bin')
 
 def is_complete():
-    if arrogantandy.hit is bin:
+    if dodgydan.hit is bin:
         return True

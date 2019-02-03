@@ -1,7 +1,10 @@
-from setup import put
+from setup import put, all_group
 
 instructions = "release all the balloons and release the several lonely peeople. Collect them."
 
+next_level = 'yourmother'
+
+level_complete = 'You released the five lonely people! High five! .... No? Suit yourself then'
 put(0, 0, 'issybox')
 put(0, 32, 'bob')
 put(0, 32, 'box')
@@ -37,3 +40,11 @@ put(224, 123, 'box')
 put(224, 236, 'box')
 
 put(630, 0, 'wall')
+
+
+
+def is_complete():
+    for object in all_group:
+        if object.type_name == 'box':
+            return False
+    return True

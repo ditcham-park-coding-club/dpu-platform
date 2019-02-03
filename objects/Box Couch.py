@@ -6,7 +6,7 @@ mass = 1
 
 def action(self):
     self.kill()
-    put(self.rect.x, self.rect.y, random.choice(['Couch', 'Picture Of A Picture', 'Lamp GP']))
+    put(self.rect.x, self.rect.y, random.choice(['Couch', 'Picture Of A Picture', 'Lamp GP', 'guineapigchair', 'Bed']))
     #i want to wait for a bit then move to the hutch scene and position the Couch
     # OK. To wait for a bit, how about doing a countdown?
     # Create a variable with a value of say 100, then make it smaller every frame.
