@@ -11,8 +11,12 @@ put(430, 0, 'Snake')
 put(490, 0, 'Snake')
 snake3 = put(160, 60, 'Snake')
 snake3.buoyancy = 10
+snake3.mass = 1000
+snake3.is_random = True
 
-put(360, 0, 'Snake')
+snake4 = put(360, 0, 'Snake')
+snake4.buoyancy = 10
+
 put(290, 45, 'Snake')
 snakebob = put(333, 12, 'Snake')
 snakebob.buoyancy=10
