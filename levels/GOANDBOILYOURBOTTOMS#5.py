@@ -1,8 +1,8 @@
 from setup import put
 
-instructions = 'Get rid of the boxes to push Dodgy Dan into the bin!'
+instructions = 'Get rid of the boxes to push Dodgy Dan into the bin and release his prisoners!'
 
-level_complete = 'Congrats! you have rid a small, virtual, non-existent world of \n a little bit of non-existent evil. you cant do everything.'
+level_complete = 'Yay! You have rid a pretend world of a bit of pretend evil. You can\'t do everything.'
 
 next_level = 'borisjohnson'
 
@@ -17,7 +17,7 @@ put(200,400, 'box')
 put(200,320, 'box')
 put(161,480, 'box')
 put(161,400, 'box')
-put(161,320, 'box')
+put(161,320, 'issybox')
 put(161,240, 'box')
 put(161,160, 'box')
 put(161,80, 'box')
@@ -29,7 +29,7 @@ put(239,400, 'box')
 put(239,360, 'box')
 put(239,320, 'box')
 put(239,280, 'box')
-put(239,240, 'box')
+put(239,240, 'issybox')
 put(239,200, 'box')
 put(200,100, 'box')
 put(200,60, 'box')

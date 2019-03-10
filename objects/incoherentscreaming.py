@@ -1,7 +1,7 @@
 from pygame.locals import *
 from setup import Physical
 
-mass = 0.1
+mass = 1
 
 def on_frame(self, key_state, level):
     if key_state[K_RIGHT]:
@@ -12,6 +12,9 @@ def on_frame(self, key_state, level):
     if key_state[K_UP]:
         self.dy = -10
 
+    if key_state[K_SPACE]:
+        if self.hit is not None:
+            self.hit.action()
 
 
 def __init__(self):
