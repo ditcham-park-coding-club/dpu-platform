@@ -108,6 +108,12 @@ def load_image(name):
     return pygame.image.load(image_path(name)).convert()
 
 
+def put_background(x, y, file_name):
+    bkg = pygame.sprite.Sprite(all_group)
+    bkg.image = pygame.image.load(file_name).convert()
+    bkg.rect = bkg.image.get_rect(topleft=(x, y))
+
+
 def put(x, y, type_name, *init_args):
     object_type = object_types[type_name]
     sprite = object_type(*init_args)
@@ -147,6 +153,7 @@ for key in object_types:
         image = object_types[key].image
         if image is not None:
             log(1, f"{key} has dimensions {image.get_width(), image.get_height()}")
+            image.set_colorkey((0, 0, 0))
 
 
 class ChooseNext(object):

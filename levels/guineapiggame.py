@@ -1,5 +1,7 @@
 import random
-from setup import put
+from setup import put, put_background
+
+put_background(0, 0, 'objects/Couch.bmp')
 
 objects = ['box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box',
  'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'Box Couch']
