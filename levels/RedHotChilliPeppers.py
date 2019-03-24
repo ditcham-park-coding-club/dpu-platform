@@ -33,3 +33,5 @@ def is_complete():
     if fudge.hit is not None and fudge.hit.type_name == 'Snake':
         next_level = None
         return True
+
+        

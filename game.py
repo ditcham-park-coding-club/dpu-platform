@@ -13,9 +13,13 @@ def main():
     clock = pygame.time.Clock()
     announce = None
     next_level_name = None
+    carrying = None
 
     while not has_quit():
         if not announce and level.get('is_complete') and level['is_complete']():
+            carrying = []
+            for s in object_group:
+                carrying += s.carrying
             all_group.empty()
             object_group.empty()
             next_level_name = level.get('next_level')
@@ -26,7 +30,7 @@ def main():
         if announce and not announce.alive():
             announce = None
             if next_level_name:
-                level = run_level(next_level_name, level)
+                level = run_level(next_level_name, level, carrying)
             else:
                 return
 
@@ -62,11 +66,13 @@ def main():
         clock.tick(FRAME_RATE)
 
 
-def run_level(level_name, previous_level=None):
-    level = runpy.run_module("levels." + level_name, init_globals={
+def run_level(level_name, previous_level=None, carrying=[]):
+    globals = {
         k: previous_level[k] for k in previous_level
         if k not in ['is_complete', 'next_level', 'instructions']
-    } if previous_level is not None else None)
+    } if previous_level is not None else {}
+    globals['carrying'] = carrying
+    level = runpy.run_module("levels." + level_name, init_globals=globals)
     if level.get('instructions') is not None:
         instructions = Text(level['instructions'])
         instructions.y = 0

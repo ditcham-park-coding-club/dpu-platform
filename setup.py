@@ -59,7 +59,7 @@ class Text(pygame.sprite.Sprite):
     def __init__(self, msg, text_color=Color('white')):
         super().__init__(all_group)
         self.font = pygame.font.Font(None, 25)
-        self.life = FRAME_RATE * log10(len(msg))
+        self.life = FRAME_RATE * log10(len(msg)) * 2
         self.image = self.font.render(msg, 0, text_color)
         self.rect = self.image.get_rect()
 

@@ -1,9 +1,10 @@
-from setup import put
+from setup import put, object_group, put_background
 
 instructions = 'Get rid of the boxes to push Racist Ralph into the bin and release his prisoners!'
 
 next_level = 'GOANDBOILYOURBOTTOMS#2'
 
+put_background(0,0, 'objects/shiny happy people.bmp')
 put(0, 100, 'wall')
 put(0, 300, 'wall')
 racistralph = put(200,140, 'racist ralph')
@@ -34,5 +35,10 @@ put(200,60, 'box')
 bin = put(500, 60, 'bin')
 
 def is_complete():
-    if racistralph.hit is bin:
+    any_issy_boxes = False
+    for sprite in object_group:
+        if sprite.type_name == 'issybox':
+            any_issy_boxes = True
+
+    if racistralph.hit is bin and not any_issy_boxes:
         return True

@@ -1,7 +1,9 @@
 import random
 from setup import put, put_background
 
-put_background(0, 0, 'objects/Couch.bmp')
+next_level = 'Guineapighutch'
+
+# Some instructions might be nice for this level!
 
 objects = ['box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box',
  'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'Box Couch']

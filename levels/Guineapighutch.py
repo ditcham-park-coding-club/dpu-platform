@@ -1,4 +1,5 @@
-from setup import put
+from setup import put, put_background
 
-put(640, 480, 'Couch')
-put(456, 480, 'Picture Of A Picture')
+put_background(0, 0, 'objects/Guinea pig hutch level backgrownd.bmp')
+
+put(0, 0, 'Couch')
