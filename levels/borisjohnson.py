@@ -11,7 +11,7 @@ next_level = 'guineapiggame'
 #I like HURRICANEs
 #know that you are my favourite person
 #(is it true im your favwoute person?)
-level_complete = 'You released the two lonely people! Now they can be lonely together'
+farewell = 'You released the two lonely people! Now they can be lonely together'
 put(0, 0, 'box')
 put(0, 32, 'bob')
 put(0, 32, 'box')

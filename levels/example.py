@@ -2,7 +2,7 @@ from setup import put
 
 instructions = 'Collect two balloons to complete the level'
 
-next_level = 'GOANDBOILYOURBOTTOMS'
+next_level = 'RedHotChilliPeppers'
 
 boris = put(64, 80, 'boris')
 

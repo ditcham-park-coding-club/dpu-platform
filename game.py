@@ -7,30 +7,29 @@ from setup import *
 MAX_ITERATIONS = 1000
 WARN_ITERATIONS = 100
 
+LEVEL_SYMBOLS = ['farewell', 'is_complete', 'next_level', 'instructions']
+LEVEL = type('Level', (object,), {k:k for k in LEVEL_SYMBOLS})()
+
 def main():
     # Run the requested start level
-    level = run_level(sys.argv[1])
+    level = run_level(sys.argv[1] if len(sys.argv) > 1 else 'example')
     clock = pygame.time.Clock()
     announce = None
     next_level_name = None
-    carrying = None
 
     while not has_quit():
-        if not announce and level.get('is_complete') and level['is_complete']():
-            carrying = []
-            for s in object_group:
-                carrying += s.carrying
+        if not announce and level.get(LEVEL.is_complete) and level[LEVEL.is_complete]():
             all_group.empty()
             object_group.empty()
-            next_level_name = level.get('next_level')
-            complete_msg = level.get('level_complete') if 'level_complete' in level else 'Level Complete'
-            announce = Text(complete_msg if next_level_name else 'Game Over')
+            next_level_name = level.get(LEVEL.next_level)
+            farewell = level.get(LEVEL.farewell) if LEVEL.farewell in level else 'Level Complete'
+            announce = Text(farewell if next_level_name else 'Game Over')
             announce.rect.center = SCREEN_RECT.center
 
         if announce and not announce.alive():
             announce = None
             if next_level_name:
-                level = run_level(next_level_name, level, carrying)
+                level = run_level(next_level_name, level)
             else:
                 return
 
@@ -66,15 +65,13 @@ def main():
         clock.tick(FRAME_RATE)
 
 
-def run_level(level_name, previous_level=None, carrying=[]):
-    globals = {
-        k: previous_level[k] for k in previous_level
-        if k not in ['is_complete', 'next_level', 'instructions']
-    } if previous_level is not None else {}
-    globals['carrying'] = carrying
-    level = runpy.run_module("levels." + level_name, init_globals=globals)
-    if level.get('instructions') is not None:
-        instructions = Text(level['instructions'])
+def run_level(level_name, previous_level=None):
+    # Carry forward every level member except the base 'class' ones
+    level = runpy.run_module("levels." + level_name, init_globals={
+        k: previous_level[k] for k in previous_level if k not in LEVEL_SYMBOLS
+    } if previous_level is not None else {})
+    if level.get(LEVEL.instructions) is not None:
+        instructions = Text(level[LEVEL.instructions])
         instructions.y = 0
         instructions.rect.centerx = SCREEN_RECT.centerx
     return level

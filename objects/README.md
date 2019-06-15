@@ -19,7 +19,6 @@ You can add the following kinds of things to an object's script.
 * `mass`: This is the mass of the object, as a decimal. If you don't include this, the value will be `10.0`.
 * `elasticity`: This is the bounciness of the object when it collides with something, as a decimal between zero and one. If you don't include this, the value will be `0.3` (a bit bouncy).
 * `buoyancy`: This is the floaty-ness of the object. Gravity pulls objects down, and this pulls objects up. A value of ten will make the object float in the middle of the screen. Less than that, it will sink under gravity; more, and it will float to the top of the screen. If you don't include this, the value will be `0.0` (not floaty at all).
-* `portable`: This can be either `True` or `False`. By itself this property does nothing, but another object (say, a character), might check if an object is portable and allow the player to pick it up.
 * `on_frame`: This is a function that defines how the object behaves all the time. We'll look more at this in the Behaviour section below.
 * `action`: A function that defines some behaviour of the object when another object, like a character, interacts with it. We'll also see how this works below.
 
@@ -39,13 +38,12 @@ There are three _arguments_ to the function, which must exist or the program wil
 * `self.name`: the name of this copy. This starts out as the object name with a number added to it.
 * `self.image`: the image of this copy. This is a pygame object called a [Surface](https://www.pygame.org/docs/ref/surface.html).
 * `self.rect`: the location and size of this copy. This is a pygame object called a [Rect](https://www.pygame.org/docs/ref/rect.html).
-* `self.hit`: if the copy is touching another object, then the value of this property will be whatever it is touching. Otherwise, it will be `None`. If it's not `None`, you might consider executing the object's `action` function, like this: `self.hit.action()`.
+* `self.hit`: if the copy is touching another object, then the value of this property will be whatever it is touching. Otherwise, it will be `None`. If it's not `None`, you might consider executing the object's `action` function, like this: `self.hit.action(level)`.
 * `self.speech`: if this copy is currently saying something, this will not be `None`.
-* `self.carrying`: a list of other objects that this copy is carrying. You can add to and remove from this list.
 * `self.dx`: the horizontal speed of the object (it stands for "delta x"). A value of about 10 will make the object smoothly move to the right; -10 will make it move to the left.
 * `self.dy`: the vertical speed of the object (it stands for "delta y"). A value of about 10 will make the object smoothly move down (remember, the y-axis is downward); -10 will make it move up. But of course gravity will take hold as soon as the object is moving upward!
 
-`key_state` contains any keys that are currently pressed by the player. This is a data structure called a _map_. To check whether a key is pressed, we have a look in the map using an expression like this:
+`key_state` contains any keys that are currently pressed by the player. This is a data structure called a _dict_. To check whether a key is pressed, we have a look in the dict using an expression like this:
 ```python
   if key_state[K_UP]:
     # Do something
@@ -55,4 +53,4 @@ The key names, like `K_UP` (for the up arrow key) are defined in [pygame](https:
 from pygame.locals import *
 ```
 
-`level` is the level that we're on. This is a Python _map_ as well, containing all the variables in your level, accessed by the variable name as a string. For example, if you have a variable called `boris`, you can look at the variable in the level object like this: `level['boris'])`. This is a bit awkward, but it allows you to change the level from inside an object.
+`level` is the level that we're on. This is a Python _dict_ as well, containing all the variables in your level, accessed by the variable name as a string. For example, if you have a variable called `boris`, you can look at the variable in the level object like this: `level['boris'])`. This is a bit awkward, but it allows you to change the level from inside an object.

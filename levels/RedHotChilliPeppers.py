@@ -1,7 +1,7 @@
 from setup import put
 instructions = 'Make it to the door without being kiled by the Red Hot Chilli Peppers!!'
 
-level_complete = 'Congratulations on not dying!'
+farewell = 'Congratulations on not dying!'
 
 next_level = 'guineapiggame'
 
@@ -33,5 +33,3 @@ def is_complete():
     if fudge.hit is not None and fudge.hit.type_name == 'Snake':
         next_level = None
         return True
-
-        

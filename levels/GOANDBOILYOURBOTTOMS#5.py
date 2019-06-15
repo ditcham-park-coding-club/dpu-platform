@@ -2,7 +2,7 @@ from setup import put, object_group, put_background
 
 instructions = 'Get rid of the boxes to push Dodgy Dan into the bin and release his prisoners!'
 
-level_complete = 'Yay! You have rid a pretend world of a bit of pretend evil. You can\'t do everything.'
+farewell = 'Yay! You have rid a pretend world of a bit of pretend evil. You can\'t do everything.'
 
 next_level = 'borisjohnson'
 

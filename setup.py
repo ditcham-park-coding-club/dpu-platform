@@ -21,13 +21,11 @@ class Physical(pygame.sprite.Sprite):
     mass = 10.0
     elasticity = 0.3
     buoyancy = 0.0
-    portable = False
 
     def __init__(self):
         super().__init__()
         self.rect = None
         (self.dx, self.dy) = (0.0, 0.0)
-        self.carrying = []
         index = sum(1 for s in object_group.sprites() if type(s).__name__ == type(self).__name__)
         self.type_name = type(self).__name__
         self.name = f"{self.type_name}{index + 1}"
@@ -51,7 +49,7 @@ class Physical(pygame.sprite.Sprite):
             self.speech.kill()
         self.speech = Speech(self, msg, speech_color)
 
-    def action(self):
+    def action(self, level):
         pass
 
 

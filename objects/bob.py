@@ -15,4 +15,4 @@ def on_frame(self, key_state, level):
 
     if key_state[K_SPACE]:
         if self.hit is not None:
-            self.hit.action()
+            self.hit.action(level)

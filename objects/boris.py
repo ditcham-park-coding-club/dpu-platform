@@ -5,9 +5,8 @@ sayings = ["Hi!",
            "My name is Alexander Hamilton",
            "Move me with the LEFT and RIGHT keys",
            "Jump me with the UP key",
-           "Press SPACE to do something",
-           "Press 'c' to see what I'm carrying"]
-
+           "Press SPACE to do something"]
+carrying = []
 
 def on_frame(self, key_state, level):
     if key_state[K_RIGHT]:
@@ -20,9 +19,9 @@ def on_frame(self, key_state, level):
 
     if key_state[K_SPACE]:
         if self.hit is not None:
-            self.hit.action()
+            self.hit.action(level)
 
-            if self.hit.portable:
+            if self.hit.type_name == 'balloon':
                 self.hit.kill()
                 self.carrying.append(self.hit)
 

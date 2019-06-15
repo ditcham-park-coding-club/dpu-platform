@@ -25,6 +25,7 @@ When you `put` an object, the function returns a reference to the object which y
 
 You can also define the following kinds of things in a level. See the [example level](/levels/example.py) for examples of these.
 
-* `instructions`: if there is a variable with this name, then the value will be shown for a moment when the level starts.
-* `next_level`: if there is a variable with this name, then when the level is complete (see below), the game will move to the level named as the variable's value.
+* `instructions`: if there is a string variable with this name, then the value will be shown for a moment when the level starts.
+* `farewell`: if there is a string variable with this name, then the value will be shown for a moment when the level has completed.
+* `next_level`: if there is a string variable with this name, then when the level is complete (see below), the game will move to the level named as the variable's value.
 * `is_complete`: if there is a function with this name, the function will be called whenever anything happens in the level. If the function, when called, returns `True`, then the level will be over and the game will move to the next level.
