@@ -3,8 +3,6 @@ from setup import put, put_background
 
 next_level = 'Guineapighutch'
 
-# Some instructions might be nice for this level!
-
 objects = ['box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box',
  'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'box', 'Box Couch']
 put(150, 150, 'Fudge Jumping')
@@ -23,8 +21,8 @@ for object in objects:
         #print('found the box couch!')
 
 def is_complete():
-    if box_couch.count < 200:
-        box_couch.count = box_couch.count - 1
+    if box_couch.count_down < 200:
+        box_couch.count_down = box_couch.count_down - 1
 
-    if box_couch.count == 0:
+    if box_couch.count_down == 0:
         return True

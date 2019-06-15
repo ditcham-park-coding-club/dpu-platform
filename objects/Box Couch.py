@@ -3,16 +3,17 @@ import random
 from setup import put
 
 mass = 1
-count = 200
-things = ['Couch', 'Picture Of A Picture', 'Lamp GP', 'guineapigchair', 'Bed', 'tableandchair']
-
+count_down = 200
+things = [ 'Bed']
+#'Couch', 'Picture Of A Picture', 'Lamp GP', 'guineapigchair', 'tableandchair'
 def action(self):
     self.kill()
-    something = random.choice(things)
-    no_phones = put(self.rect.x, self.rect.y, something)
-    no_phones.moveable_couch = False
-    things.remove(something)
-    self.count = self.count - 1
+    somethingType = random.choice(things)
+    newThing = put(self.rect.x, self.rect.y, somethingType)
+    newThing.moveable = False
+    things.remove(somethingType)
+    self.count_down = self.count_down - 1
+    newThing.carrying.append(newThing)
 
     # Create a variable with a value of say 100, then make it smaller every frame.
     # To do this, you'll need an "on_frame" method. Read this:

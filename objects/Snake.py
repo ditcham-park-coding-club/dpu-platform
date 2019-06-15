@@ -9,7 +9,7 @@ def on_frame(self, key_state, level):
     if self.is_random:
         self.dx = random.choice([-10, 10])
     else:
-        if self.hit is not None:
+        if self.hit is not None or self.hit_wall[0]:
             if self.going_left == True:
                 self.going_left = False
             elif self.going_left == False:

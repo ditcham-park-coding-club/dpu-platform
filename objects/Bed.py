@@ -17,7 +17,6 @@ def on_frame(self, key_state, level):
             self.dy = 10
 
         if key_state[K_SPACE]:
-            if self.hit is not None:
-                self.hit.action()
-
+            self.moveable = False
+            
 buoyancy = 10
