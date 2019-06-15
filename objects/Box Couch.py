@@ -14,4 +14,4 @@ def action(self, level):
     things.remove(somethingType)
     self.count_down = self.count_down - 1
     # Record what was found in the level
-    level['last_found_furniture_type'] = newThing.type_name
+    level.last_found_furniture_type = newThing.type_name

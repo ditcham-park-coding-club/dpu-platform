@@ -53,4 +53,4 @@ The key names, like `K_UP` (for the up arrow key) are defined in [pygame](https:
 from pygame.locals import *
 ```
 
-`level` is the level that we're on. This is a Python _dict_ as well, containing all the variables in your level, accessed by the variable name as a string. For example, if you have a variable called `boris`, you can look at the variable in the level object like this: `level['boris'])`. This is a bit awkward, but it allows you to change the level from inside an object.
+`level` is the level that we're on. This is a Python object containing all the variables in your level. For example, if you have a variable called `boris`, you can look at the variable in the level object like this: `level.boris`.
