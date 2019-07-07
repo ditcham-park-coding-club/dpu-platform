@@ -26,3 +26,6 @@ def is_complete():
 
     if box_couch.count_down == 0:
         return True
+
+if not 'things' in globals():
+    things = ['Bed', 'Picture Of A Picture', 'Couch', 'Lamp GP', 'guineapigchair', 'tableandchair']

@@ -3,7 +3,7 @@ instructions = 'Make it to the door without being kiled by the Red Hot Chilli Pe
 
 farewell = 'Congratulations on not dying!'
 
-next_level = 'guineapiggame'
+next_level = 'borisjohnson'
 
 door = put(600, 0, 'Door')
 fudge = put(55, 0, 'Fudge Jumping')
@@ -25,8 +25,6 @@ snakebob.going_left = False
 put(280, 0, 'Snake')
 
 def is_complete():
-    global next_level
-
     if fudge.hit is door:
         return True
 

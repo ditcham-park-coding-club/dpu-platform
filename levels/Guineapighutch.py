@@ -1,8 +1,6 @@
 from setup import put, put_background
 
-next_level = 'guineapiggame'
-
-put_background(0, 0, 'objects/open hutch.bmp')
+put_background(0, 0, 'objects/hopefully the proper hutch.bmp')
 
 thething = put(0, 0, last_found_furniture_type)
 
@@ -19,4 +17,9 @@ def is_complete():
     if thething.moveable == False:
         # Record exactly where the new furniture was placed
         furniture[last_found_furniture_type] = (thething.rect.x, thething.rect.y)
+        if things == []:
+            farewell = "Well done! Now you can print out a copy of your beautiful hutch (p) or move on to the next game (n)"
+            next_level = 'GOANDBOILYOURBOTTOMS'
+        else:
+            next_level = 'guineapiggame'
         return True
